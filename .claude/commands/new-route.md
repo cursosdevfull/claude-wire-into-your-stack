@@ -19,14 +19,21 @@ Sepáralos por espacios:
 - Si ya existe `routes/<nombre>.js` o `server.js` ya monta `/<nombre>`, detente y avisa al usuario. No sobrescribas nada.
 - No uses `health` ni `users`, porque ya existen.
 
-En los pasos siguientes, `<nombre>` es el nombre normalizado, por ejemplo `products`. `<Nombre>` es la misma palabra con la primera letra en mayúscula, por ejemplo `Products`, y se usa en los nombres de las funciones. `<Singular>` es su forma en singular con mayúscula inicial, por ejemplo `Product` (para `roles` sería `Role`).
+En los pasos siguientes se usan estos nombres. Los guiones **nunca** aparecen en identificadores de JavaScript:
+
+| Marcador | Uso | `products` | `order-items` |
+|---|---|---|---|
+| `<nombre>` | URL, nombre de archivo (`routes/`, `tests/`) | `products` | `order-items` |
+| `<ident>` | camelCase: array en `db/store.js` y variable del router | `products` | `orderItems` |
+| `<Ident>` | PascalCase: nombres de funciones y título en docs | `Products` | `OrderItems` |
+| `<Singular>` | PascalCase singular: `get<Singular>ById` y mensaje de error | `Product` | `OrderItem` |
 
 ## 2. Capa de datos: `db/store.js`
 
 Sigue la convención de `CLAUDE.md`: los datos solo se leen y escriben a través de `db/store.js`.
 
-- Añade un array en memoria `<nombre>` (vacío). No añadas un contador de ids salvo que también crees una función para dar de alta registros; si no, ESLint lo marcará como variable sin usar.
-- Añade las funciones `list<Nombre>()` y `get<Singular>ById(id)`, con el mismo estilo que `listUsers` y `getUser`.
+- Añade un array en memoria `<ident>` (vacío). No añadas un contador de ids salvo que también crees una función para dar de alta registros; si no, ESLint lo marcará como variable sin usar.
+- Añade las funciones `list<Ident>()` y `get<Singular>ById(id)`, con el mismo estilo que `listUsers` y `getUser`.
 - Dentro de `seed()`, reinicia el array a `[]`, para que `reset()` también lo limpie en los tests.
 - Exporta las nuevas funciones en `module.exports`.
 
@@ -34,16 +41,16 @@ Sigue la convención de `CLAUDE.md`: los datos solo se leen y escriben a través
 
 Copia la estructura de `routes/users.js` (CommonJS, `express.Router()`), con dos endpoints:
 
-- `GET /`: devuelve `store.list<Nombre>()`.
+- `GET /`: devuelve `store.list<Ident>()`.
 - `GET /:id`: devuelve el registro, o `404` con `{ "error": "<Singular> not found" }` si no existe.
 
 No añadas POST, PUT ni DELETE salvo que el usuario lo pida.
 
 ## 4. Monta la ruta en `server.js`
 
-- Importa el router: `const <nombre>Router = require('./routes/<nombre>');`. Si el nombre lleva guiones, usa camelCase en la variable (por ejemplo, `order-items` → `orderItemsRouter`).
-- Si `PROTEGER` es **true**: `app.use('/<nombre>', requireApiKey, <nombre>Router);`. El middleware está en `middleware/apiKey.js`. Si no existe, créalo siguiendo el skill `api-key-auth` (`.claude/skills/api-key-auth/`) y añade `middleware` al script `lint` de `package.json`.
-- Si `PROTEGER` es **false**: `app.use('/<nombre>', <nombre>Router);`.
+- Importa el router: `const <ident>Router = require('./routes/<nombre>');` (por ejemplo, `const orderItemsRouter = require('./routes/order-items');`).
+- Si `PROTEGER` es **true**: `app.use('/<nombre>', requireApiKey, <ident>Router);`. El middleware está en `middleware/apiKey.js`. Si no existe, créalo siguiendo el skill `api-key-auth` (`.claude/skills/api-key-auth/`) y añade `middleware` al script `lint` de `package.json`.
+- Si `PROTEGER` es **false**: `app.use('/<nombre>', <ident>Router);`.
 
 ## 5. Tests: `tests/<nombre>.test.js`
 
@@ -51,11 +58,11 @@ Usa `node:test` + `supertest`, como en `tests/users.test.js`, con `store.reset()
 
 - `GET /<nombre>` → `200` con un array.
 - `GET /<nombre>/999` → `404` con `{ error: '<Singular> not found' }`.
-- Si está protegida: añade `.set('x-api-key', 'test-key')` a los tests anteriores y un test más que compruebe que sin cabecera devuelve `401` con `{ error: 'API key is required' }`.
+- Si está protegida: define `process.env.API_KEY = 'test-key'` al inicio del archivo, añade `.set('x-api-key', 'test-key')` a los tests anteriores y dos tests más: sin cabecera → `401` con `{ error: 'API key is required' }`; con una clave incorrecta → `401` con `{ error: 'Invalid API key' }`.
 
 ## 6. Documentación
 
-En `docs/api.md`, añade una sección `## <Nombre>` con sus endpoints. Si está protegida, indica que requiere la cabecera `x-api-key`. Actualiza también la sección **Architecture** de `CLAUDE.md`, donde aparece la lista de archivos de `routes/`.
+En `docs/api.md`, añade una sección `## <Ident>` con sus endpoints. Si está protegida, indica que requiere la cabecera `x-api-key`. Actualiza también la sección **Architecture** de `CLAUDE.md`, donde aparece la lista de archivos de `routes/`.
 
 ## 7. Verifica y resume
 
@@ -63,5 +70,5 @@ En `docs/api.md`, añade una sección `## <Nombre>` con sus endpoints. Si está 
 2. Resume al usuario, de forma breve:
    - los archivos creados y modificados,
    - si la ruta quedó protegida o no,
-   - un ejemplo `curl` para probarla (con `-H "x-api-key: cualquiera"` si está protegida).
+   - un ejemplo `curl` para probarla (si está protegida: arrancar con `API_KEY=mi-clave npm run dev` y usar `-H "x-api-key: mi-clave"`).
 3. No hagas commit.
