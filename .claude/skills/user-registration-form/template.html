@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>User Registration</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: Verdana, sans-serif;
+      font-size: 14px;
+      color: #1b4332;
+      background-color: #f1f8f4;
+    }
+
+    .container {
+      width: 380px;
+      margin: 80px auto;
+      padding: 40px;
+      background-color: #ffffff;
+      border: 1px solid #b7e4c7;
+      border-radius: 6px;
+    }
+
+    h1 {
+      font-size: 16px;
+      font-weight: normal;
+      color: #2d6a4f;
+      margin-bottom: 32px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    .field {
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      font-size: 12px;
+      color: #40916c;
+      margin-bottom: 6px;
+    }
+
+    input {
+      width: 100%;
+      padding: 10px 12px;
+      font-family: Verdana, sans-serif;
+      font-size: 14px;
+      color: #1b4332;
+      background-color: #ffffff;
+      border: 1px solid #95d5b2;
+      border-radius: 4px;
+      outline: none;
+    }
+
+    input:focus {
+      border-color: #2d6a4f;
+    }
+
+    button {
+      width: 100%;
+      margin-top: 12px;
+      padding: 12px;
+      font-family: Verdana, sans-serif;
+      font-size: 14px;
+      color: #ffffff;
+      background-color: #2d6a4f;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #1b4332;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Create account</h1>
+
+    <form action="/users" method="post">
+      <div class="field">
+        <label for="name">Name</label>
+        <input type="text" id="name" name="name" required>
+      </div>
+
+      <div class="field">
+        <label for="lastname">Last name</label>
+        <input type="text" id="lastname" name="lastname" required>
+      </div>
+
+      <div class="field">
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" required>
+      </div>
+
+      <div class="field">
+        <label for="confirm_password">Confirm password</label>
+        <input type="password" id="confirm_password" name="confirm_password" required>
+      </div>
+
+      <button type="submit">Register</button>
+    </form>
+  </div>
+</body>
+</html>

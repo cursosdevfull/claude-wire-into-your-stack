@@ -3,6 +3,7 @@
 
 let users = [];
 let nextId = 1;
+let roles = [];
 
 function seed() {
   users = [
@@ -10,6 +11,7 @@ function seed() {
     { id: 2, name: 'Alan Turing', email: 'alan@example.com' },
   ];
   nextId = 3;
+  roles = [];
 }
 seed();
 
@@ -36,9 +38,25 @@ function updateUser(id, fields) {
   return user;
 }
 
+function listRoles() {
+  return roles;
+}
+
+function getRoleById(id) {
+  return roles.find((role) => role.id === id);
+}
+
 // Reset to the seed data. Used by the tests so each one starts clean.
 function reset() {
   seed();
 }
 
-module.exports = { listUsers, getUser, createUser, updateUser, reset };
+module.exports = {
+  listUsers,
+  getUser,
+  createUser,
+  updateUser,
+  listRoles,
+  getRoleById,
+  reset,
+};
