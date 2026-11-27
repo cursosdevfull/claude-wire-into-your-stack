@@ -9,7 +9,7 @@ A small Express API used as the working project throughout the Claude Code cours
 
 ## Architecture
 - `server.js` — entry point; creates the Express app, mounts the routers, and listens
-- `routes/` — one file per resource (`users.js`, `roles.js`, `health.js`), each exporting an Express router
+- `routes/` — one file per resource (`users.js`, `health.js`), each exporting an Express router
 - `db/store.js` — the in-memory data helper that every route reads and writes through
 
 ## Conventions

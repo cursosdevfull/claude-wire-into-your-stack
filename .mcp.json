@@ -1,11 +1,9 @@
 {
   "mcpServers": {
-    "time": {
+    "fetch": {
       "type": "stdio",
       "command": "uvx",
-      "args": [
-        "mcp-server-time"
-      ],
+      "args": ["mcp-server-fetch"],
       "env": {}
     }
   }

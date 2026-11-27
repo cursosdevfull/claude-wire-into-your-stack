@@ -5,13 +5,17 @@ argument-hint: <nombre-ruta> <proteger: true|false>
 
 Crea un nuevo recurso en esta API Express.
 
-- **Nombre de la ruta:** `$0`
-- **¿Proteger con API key?:** `$1`
+Argumentos recibidos: `$ARGUMENTS`
+
+Sepáralos por espacios:
+
+- **`NOMBRE`** (primera palabra): nombre de la ruta.
+- **`PROTEGER`** (segunda palabra): si se protege con API key (`true` o `false`).
 
 ## 1. Valida los argumentos antes de cambiar nada
 
-- `$0` es obligatorio. Normalízalo: quita la `/` inicial y pásalo a minúsculas. Solo puede tener letras minúsculas, números y guiones (`^[a-z][a-z0-9-]*$`). Si no cumple, detente y explica por qué.
-- `$1` debe ser `true` o `false` (acepta también `sí`/`si`/`yes` como `true` y `no` como `false`). Si falta o no es válido, detente y pide al usuario que lo indique. **No** asumas un valor por defecto.
+- `NOMBRE` es obligatorio. Normalízalo: quita la `/` inicial y pásalo a minúsculas. Solo puede tener letras minúsculas, números y guiones (`^[a-z][a-z0-9-]*$`). Si no cumple, detente y explica por qué.
+- `PROTEGER` debe ser `true` o `false` (acepta también `sí`/`si`/`yes` como `true` y `no` como `false`). Si falta o no es válido, detente y pide al usuario que lo indique. **No** asumas un valor por defecto.
 - Si ya existe `routes/<nombre>.js` o `server.js` ya monta `/<nombre>`, detente y avisa al usuario. No sobrescribas nada.
 - No uses `health` ni `users`, porque ya existen.
 
@@ -38,8 +42,8 @@ No añadas POST, PUT ni DELETE salvo que el usuario lo pida.
 ## 4. Monta la ruta en `server.js`
 
 - Importa el router: `const <nombre>Router = require('./routes/<nombre>');`. Si el nombre lleva guiones, usa camelCase en la variable (por ejemplo, `order-items` → `orderItemsRouter`).
-- Si `$1` es **true**: `app.use('/<nombre>', requireApiKey, <nombre>Router);`. El middleware está en `middleware/apiKey.js`. Si no existe, créalo siguiendo el skill `api-key-auth` (`.claude/skills/api-key-auth/`) y añade `middleware` al script `lint` de `package.json`.
-- Si `$1` es **false**: `app.use('/<nombre>', <nombre>Router);`.
+- Si `PROTEGER` es **true**: `app.use('/<nombre>', requireApiKey, <nombre>Router);`. El middleware está en `middleware/apiKey.js`. Si no existe, créalo siguiendo el skill `api-key-auth` (`.claude/skills/api-key-auth/`) y añade `middleware` al script `lint` de `package.json`.
+- Si `PROTEGER` es **false**: `app.use('/<nombre>', <nombre>Router);`.
 
 ## 5. Tests: `tests/<nombre>.test.js`
 

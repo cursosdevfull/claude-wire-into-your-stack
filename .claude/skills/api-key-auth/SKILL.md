@@ -1,6 +1,6 @@
 ---
 name: api-key-auth
-description: Añade a esta API Express un middleware de autenticación que protege una o varias rutas exigiendo la cabecera `x-api-key`. Solo comprueba que la cabecera esté presente y no vacía; su valor no importa. Si falta, responde 401 con `{ "error": "API key is required" }`. Úsalo cuando el usuario pida proteger una ruta o un endpoint, añadir autenticación por API key, añadir un middleware de auth o exigir una API key en algún recurso (por ejemplo "protege /users", "pon api key a la ruta X").
+description: Añade a esta API Express un middleware de autenticación que protege una o varias rutas exigiendo la cabecera `x-api-key`. Solo comprueba que la cabecera esté presente y no vacía; su valor no importa. Si falta, responde 401 con `{ "error": "API key is required" }`. Úsalo solo cuando el usuario pida explícitamente autenticación por API key o la cabecera `x-api-key` en una ruta o endpoint (por ejemplo "exige una API key en /users", "pon x-api-key a la ruta X"). No lo uses para JWT, sesiones, OAuth, login con contraseña ni otros mecanismos de autenticación.
 ---
 
 # Middleware de autenticación por API key

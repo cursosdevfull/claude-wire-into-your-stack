@@ -1,15 +1,12 @@
 const express = require('express');
 const usersRouter = require('./routes/users');
 const healthRouter = require('./routes/health');
-const rolesRouter = require('./routes/roles');
-const requireApiKey = require('./middleware/apiKey');
 
 const app = express();
 app.use(express.json());
 
 app.use('/health', healthRouter);
-app.use('/users', requireApiKey, usersRouter);
-app.use('/roles', requireApiKey, rolesRouter);
+app.use('/users', usersRouter);
 
 const PORT = process.env.PORT || 3000;
 
